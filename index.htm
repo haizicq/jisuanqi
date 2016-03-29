@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>index</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="css/styles.css" type="text/css" rel="stylesheet"/> 
+    
+ 	<script src="scripts/jquery-1.7.1.min.js"></script>
+   
+  </head>
+  <body>
+    <div id="base" class="">
+
+      <!-- Unnamed (Image) -->
+      <div id="u0" class="ax_image">
+        <img id="u0_img" class="img " src="images/u0.png"/>
+        <!-- Unnamed () -->
+        <div id="u1" class="text">
+          <p><span></span></p>
+        </div>
+      </div>
+
+      <!-- 1 (热区) -->
+      <div id="u2" class="btn_data " data-label="1">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u3" class="btn_data" title="2" data-label="2">
+      </div>
+
+      <!-- Unnamed (热区) --> 
+      <div id="u4" class="btn_data" title="3" data-label="3">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u5" class="btn_data" title="4" data-label="4">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u6" class="btn_data" title="5" data-label="5">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u7" class="btn_data" title="6" data-label="6">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u8" class="btn_point" title=".">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u9" class="btn_data" title="7" data-label="7">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u10" class="btn_data" title="8" data-label="8">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u11" class="btn_data" title="9" data-label="9">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u12" class="btn_fun" fun="clearFun">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u13" class="btn_fun"  fun="negativeFun">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u14" class="btn_fun"  fun="perFun">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u15" class="btn_data" title="0" data-label="0">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u16" class="btn_result">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u17" class="btn_symbol" symbol="-">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u18" class="btn_symbol" symbol="*">
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u19" class="btn_symbol" symbol="/">
+      </div>
+
+      <!-- ooo (形状) -->
+      <div id="u20"  data-label="ooo">
+        <img id="u20_img" class="img " src="images/ooo_u20.png"/>
+        <!-- Unnamed () -->
+        <div id="u21" class="text">
+          <p><span></span></p>
+        </div>
+      </div>
+
+      <!-- res1 (文本框) -->
+      <div id="u22" class="ax_文本框" data-label="res1">
+        <input id="u22_input" type="text" readOnly value="0" title="双击可输入表达式计算，支持乘方(^)、开方(#)、括号"/>
+        <input id="u22_input_pre" type="hidden" value="0"/>
+        <input id="u22_input_val" type="hidden" value="0"/>
+      </div>
+
+      <!-- Unnamed (热区) -->
+      <div id="u23" class="btn_symbol" symbol="+">
+      </div>
+
+
+      <!-- Unnamed (形状) -->
+      <div id="u26" class="ax_文本段落">
+        <img id="u26_img" class="img " src="images/transparent.gif"/>
+        <!-- Unnamed () -->
+        <div id="u27" class="text">
+          <p><span style="font-family:'ArialMT', 'Arial';font-weight:400;"></span><span style="font-family:'STHeitiSC-Light', 'Heiti SC Light', 'Heiti SC';font-weight:200;"></span></p>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+    //将光标移动到最后
+    (function($){
+        $.fn.textFocus=function(v){
+            var range,len,v=v===undefined?0:parseInt(v);
+            this.each(function(){
+                if($.browser.msie){
+                    range=this.createTextRange();
+                    v===0?range.collapse(false):range.move("character",v);
+                    range.select();
+                }else{
+                    len=this.value.length;
+                    v===0?this.setSelectionRange(len,len):this.setSelectionRange(v,v);
+                }
+                this.focus();
+            });
+            return this;
+        }
+    })(jQuery);
+    </script>
+    <script type="text/javascript">
+    String.prototype.replaceAll=function(s1,s2){
+		return this.replace(new RegExp(s1,"gm"),s2);
+	}
+    $(function(){
+    	//初始化实现按键想文本框中填入值
+    	$(".btn_data").click(function(){
+    		var nowVal=$("#u22_input_val").val();
+    		if(nowVal==0 && nowVal.indexOf(".")==-1){//当为0且没有小数点时
+    			
+    			nowVal=$(this).attr("data-label");
+    		}else{
+    			nowVal=nowVal+$(this).attr("data-label");
+    		}
+    		setInputVal(nowVal);
+    	});
+		$(".btn_point").click(function(){
+			var nowVal=$("#u22_input_val").val();
+			//有小数点和没有小数点
+			if(nowVal.indexOf(".")==-1){
+    			nowVal+=".";
+    		}
+			setInputVal(nowVal);
+    	});
+		$(".btn_fun").click(function(){
+    		var fun=$(this).attr("fun");
+    		if("clearFun"==fun){//清空
+    			$("#u22_input_val").val(0);
+    			$("#u22_input_pre").val(0);
+        		$("#u22_input").val(0);
+    		}else if("negativeFun"==fun){//正负数
+    			var nowVal=$("#u22_input_val").val();
+    			var pre=$("#u22_input_pre").val();
+        		var val=$("#u22_input").val();
+    			if(pre==0 && nowVal==0){
+    				if(val==0){
+    					return;
+    				}else{
+    					nowVal=val;
+    				}
+    				
+    			}
+    			if(nowVal>0){
+    				nowVal="-"+nowVal;
+    			}else if(nowVal<0){
+    				nowVal=nowVal.substring(1);
+    			}
+    			setInputVal(nowVal);
+    		}else if("perFun"==fun){//百分数
+    			var nowVal=$("#u22_input_val").val();
+    			var pre=$("#u22_input_pre").val();
+        		var val=$("#u22_input").val();
+    			if(pre==0 && nowVal==0){
+    				if(val==0){
+    					return;
+    				}else{
+    					nowVal=val;
+    				}
+    				
+    			}
+    			nowVal=nowVal/100;
+    			setInputVal(nowVal);
+    		}
+    		$("#u22_input").focus();//设置光标位置
+    	});
+		$(".btn_symbol").click(function(){
+			var nowVal=$("#u22_input_val").val();
+    		var pre=$("#u22_input_pre").val();
+    		var val=$("#u22_input").val();
+    		if(pre==0 && nowVal==0 ){//当2个都是0 不执行
+    			if(val==0){
+    				return;
+    			}else{
+    				pre=val;
+    			}
+    		}
+    		if(nowVal==0){
+    			$("#u22_input_pre").val(pre+$(this).attr("symbol"));
+    		}else if(pre==0){
+    			$("#u22_input_pre").val(nowVal+$(this).attr("symbol"));
+    		}else{
+    			$("#u22_input_pre").val(pre+nowVal+$(this).attr("symbol"));
+    		}
+    		$("#u22_input_val").val(0);
+    		$("#u22_input").val($("#u22_input_pre").val());
+    		$("#u22_input").focus();//设置光标位置
+    	});
+		//设置新输入值
+		function setInputVal(nowVal){
+			$("#u22_input_val").val(nowVal);
+    		//赋值展示
+    		var pre=$("#u22_input_pre").val();
+    		if(pre==0){
+    			$("#u22_input").val(nowVal);
+    		}else if(nowVal<0){
+    			$("#u22_input").val(pre+"("+nowVal+")");
+    		}else{
+    			$("#u22_input").val(pre+nowVal);
+    		}
+    		$("#u22_input").focus();//设置光标位置
+		}
+		$("#u22_input").dblclick(function(){
+			$(this).attr("readOnly",false);
+			$("#u22_input").focus();
+		});
+
+		$(".btn_result").click(function(){
+			var outVal=0;
+			var inputValue=$("#u22_input").val();
+			if(inputValue==null || inputValue==""){
+				outVal=0;
+			}else{
+				//去除所有的空格和换行
+				inputValue=inputValue.replaceAll(" ","");
+				inputValue=inputValue.replaceAll("\n","");
+				//判断字符是否合法
+				
+				//将^替换为乘方，将#替换为开方
+				var newData=reaplaceChar(inputValue,"^","Math.pow",2);
+				 newData=reaplaceChar(newData,"#","Math.sqrt",2);
+				 outVal=eval(newData);
+			}
+			
+			$("#u22_input").val(outVal);
+			//重置前后函数值
+			$("#u22_input_val").val(0);
+			$("#u22_input_pre").val(0);
+		});
+		//替换特殊计算符
+		function reaplaceChar(data,chars,r,type){
+			//当存在乘方或开方时，取其两端非计算符号以外的内容，但要注意括号干扰，特别是讲开方两端都包含的情况 2+((2)^(2))
+			//如 2+2^2 2+(2^2) 2+(2)^(2) 2+((2+2)^(2+2))
+			var index=data.indexOf(chars);
+			
+			if(index>-1){
+				if(type==1){//1字符替换
+					return data.replaceAll(chars,r);
+				}else if(type==2){//函数替换
+					//处理替换后返回
+					var str1=data.substring(0,index);
+					var str2=data.substring(index+1,data.length);
+					//***先判断最后一个是否括号，如果是括号取前一个括号的内容，若果不是括号，取前一个计算符内容
+					
+					// 判断括号 
+					var kh1=str1.substring(str1.length-1,str1.length);
+					var kh2=str2.substring(str2.length-1,str2.length);
+					if(kh1==")"){
+						str1=kuohao(str1, kh1);
+					}else{
+						//判断是否包含+-*/
+						var indexStr1=fuhao(str1,2);
+						if(indexStr1>-1){
+							str1=str1.substring(indexStr1+1,str1.length);
+						}
+					}
+					if(kh2=="("){
+						str2=kuohao(str2, kh2);
+					}else{
+						var indexStr2=fuhao(str2,1);
+						if(indexStr2>-1){
+							str2=str2.substring(0,indexStr2);
+						}
+					}
+					
+					var newData=data.replace(str1+chars+str2,r+"("+str1+","+str2+")");
+					return reaplaceChar(newData,chars,r,type);
+				}
+				return data;
+			}else{
+				return data;
+			}
+			
+		}
+		//根据括号处理
+		function kuohao(str,kh){
+			var fkh;
+			var indexStr=-1;
+			if("("==kh){
+				indexStr=kuohaoIndex(str,str.substring(1,str.length),kh);
+				return str.substring(0,indexStr);
+				//当为(时由最后向后找，直到找到相贴的字符为止
+				
+			}else{
+				indexStr=kuohaoIndex(str,str.substring(0,str.length-1),kh);
+				return str.substring(indexStr,str.length);
+				//当为)时由最后向前找，直到找到相贴的字符为止
+			}
+		}
+		function kuohaoIndex(str1,str2,kh){
+			var fkh;
+			if("("==kh){
+				fkh=")";
+				var indexStr1=str1.indexOf(fkh);
+				var indexStr2=str2.indexOf(kh);
+				if(indexStr2>-1 && indexStr2<indexStr1){
+					str1=str1.substring(indexStr1+1,str1.length);
+					str2=str2.substring(indexStr2+1,str2.length);
+					return kuohaoIndex(str1,str2,kh);
+				}else{
+					return indexStr1;
+				}
+			}else{
+				fkh="(";
+				var indexStr1=str1.lastIndexOf(fkh);
+				var indexStr2=str2.lastIndexOf(kh);
+				if(indexStr2>-1 && indexStr2>indexStr1){
+					str1=str1.substring(0,indexStr1);
+					str2=str2.substring(0,indexStr2);
+					return kuohaoIndex(str1,str2,kh);
+				}else{
+					return indexStr1;
+				}
+			}
+			
+		}
+		//判断最近的符号位置
+		function fuhao(str,type){
+			var indexStr=-1;
+			if(type==1){//开头
+				var indexStr1=str.indexOf("+");
+				var indexStr2=str.indexOf("-");
+				var indexStr3=str.indexOf("*");
+				var indexStr4=str.indexOf("/");
+				indexStr=indexStr1>-1?indexStr1:-1;
+				//从前向后找 取小
+				indexStr=(indexStr2>-1 && indexStr>indexStr2)?indexStr2:indexStr;
+				indexStr=(indexStr3>-1 && indexStr>indexStr3)?indexStr3:indexStr;
+				indexStr=(indexStr4>-1 && indexStr>indexStr4)?indexStr4:indexStr;
+			}else{//结束
+				var indexStr1=str.lastIndexOf("+");
+				var indexStr2=str.lastIndexOf("-");
+				var indexStr3=str.lastIndexOf("*");
+				var indexStr4=str.lastIndexOf("/");
+				indexStr=indexStr1>-1?indexStr1:-1;
+				//从后向前找 取大
+				indexStr=(indexStr2>-1 && indexStr<indexStr2)?indexStr2:indexStr;
+				indexStr=(indexStr3>-1 && indexStr<indexStr3)?indexStr3:indexStr;
+				indexStr=(indexStr4>-1 && indexStr<indexStr4)?indexStr4:indexStr;
+			}
+			return indexStr;
+		}
+		
+    });
+    </script>
+  </body>
+</html>
